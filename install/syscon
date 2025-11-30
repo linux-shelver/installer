@@ -126,6 +126,7 @@ fi
 ## grub2
 if [[ $( echo $DISTRO_BOOT ) == "grub" ]]; then
     mkdir -p /boot/{efi,$DISTRO_UNIQ} &&
+    mkdir -p /boot/efi/{boot,linux,systemd} &&
     echo 'GRUB_DISTRIBUTOR="'$DISTRO_NAME'"' >> /etc/default/grub &&
     grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=$DISTRO_UNIQ &&
     grub-mkconfig -o /boot/grub/grub.cfg
