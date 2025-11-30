@@ -83,20 +83,6 @@ if [[ ! -z $AURPACKS ]];then
     userdel -r install
 fi
 
-## flatpak
-if [[ ! -z $FLATPAKS ]];then
-    for flatapp in "${FLATPAKS[@]}"; do
-        flatpak install --noninteractive $flatapp
-    done
-fi
-
-
-## waydroid
-if [[ ! -z $( echo $PACKAGE | grep waydroid ) ]];then
-    waydroid init -s GAPPS
-fi
-
-
 ##
 ## BINPATH
 chmod +x /usr/xbin/* &&
@@ -107,23 +93,6 @@ chmod +x /usr/rbin/* &&
 rm /etc/mkinitcpio.conf &&
 rm -fr /etc/mkinitcpio.conf.d/ &&
 echo "root=$DISKPROC" > /etc/cmdline.d/01-boot.conf &&
-
-
-##
-## SERVICE
-for system_daemon in "${RDAEMONS[@]}"; do
-    systemctl enable "$system_daemon"
-done
-
-for global_daemon in "${GDAEMONS[@]}"; do
-  	systemctl enable --global "$global_daemon"
-done
-
-
-## network
-if [[ $DISTRO_NETS == "nmt" ]];then
-    systemctl disable NetworkManager-wait-online.service
-fi
 
 
 ##
@@ -147,6 +116,24 @@ if [[ $( echo $DISTRO_BOOT ) == "sysd" ]]; then
     mkinitcpio -P &&
     bootctl --path=/boot/ install
 fi
+
+
+##
+## SERVICE
+for sys_daemon in "${RDAEMONS[@]}"; do
+    systemctl enable "$sys_daemon"
+done
+
+for glob_daemon in "${GDAEMONS[@]}"; do
+  	systemctl enable --global "$glob_daemon"
+done
+
+
+## network
+if [[ $DISTRO_NETS == "nmt" ]];then
+    systemctl disable NetworkManager-wait-online.service
+fi
+
 
 
 

@@ -8,7 +8,7 @@ PACKAGE="${PACKAGE} gdm baobab gnome-shell gnome-backgrounds gnome-calculator gn
 RDAEMON="${RDAEMON} gdm "
 
 ## GLOBALS
-GDAEMON="${GDAEMON} gcr-ssh-agent.socket"
+GDAEMON="${GDAEMON} gcr-ssh-agent.socket "
 
 
 ## CONFIGS
