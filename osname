@@ -1,0 +1,55 @@
+#!/bin/bash
+
+appdir=$(pwd)
+
+
+if [[ -z $1 ]]; then
+    echo "Error : need additional paramater"
+fi
+
+
+if [[ $1 == "--reset" ]];then
+    /bin/bash /install/library/install/setups --reset &&
+    exit
+fi
+
+
+if [[ $1 == "--install" ]];then
+    /bin/bash /install/library/install/setups --purge &&
+    exit
+fi
+
+
+if [[ $1 == "--testing" ]];then
+    /bin/bash /install/library/install/setups --teste &&
+    exit
+fi
+
+
+if [[ $1 == "--build" ]];then
+    /bin/bash $appdir/library/maker/isogen $appdir &&
+    exit
+fi
+
+
+if [[ $1 == "--getapp" ]];then
+    /bin/bash $appdir/library/maker/ipkgen $appdir &&
+    exit
+fi
+
+
+if [[ $1 == "--deploy" ]];then
+    /bin/bash $appdir/library/deploy/uploads $appdir &&
+    exit
+fi
+
+
+if [[ $1 == "--gitpush" ]];then
+    /bin/bash $appdir/library/helper/gitpush $appdir &&
+    exit
+fi
+
+if [[ $1 == "--gitpull" ]];then
+    /bin/bash $appdir/library/helper/gitpuler $appdir &&
+    exit
+fi

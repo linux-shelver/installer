@@ -1,0 +1,11 @@
+NAME="OSNAME OS"
+PRETTY_NAME="OSNAME OS"
+ID=yuros
+BUILD_ID=rolling
+ANSI_COLOR="38;2;23;147;209"
+HOME_URL="https://osname.yuros.org/"
+DOCUMENTATION_URL="https://osname.yuros.org/wiki"
+SUPPORT_URL="https://osname.yuros.org/forum"
+BUG_REPORT_URL="https://osname.yuros.org/issues"
+PRIVACY_POLICY_URL="https://osname.yuros.org/repo/privacy-policy/"
+LOGO=osname-linux

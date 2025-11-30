@@ -1,0 +1,13 @@
+#!/bin/bash
+
+PACKAGE="${PACKAGE} virt-manager libvirt qemu-desktop podman podman-desktop docker code apparmor lvm2 testdisk btrfs-progs xfsprogs ntfs-3g dosfstools ethtool rsync grsync "
+AURPACK="${AURPACK} winbox "
+FLATPAK=( flathub net.agalwood.Motrix )
+RDAEMON="${RDAEMON} libvirtd docker.socket "
+GDAEMON="${GDAEMON}"
+
+
+## CONFIGS
+if [[ -d "$appdir/distros/config" ]]; then
+    cp -fr "$appdir/distros/config/"* "$appdir/config/define/"
+fi

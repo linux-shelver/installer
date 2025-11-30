@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## PACKAGE 
+PACKAGE="${PACKAGE} evolution"
+
+
+## DAEMONS
+RDAEMON="${RDAEMON}"
+
+
+## CONFIGS
+if [[ -d "$appdir/library/install/officers/level-0/config" ]]; then
+    cp -fr "$appdir/library/install/officers/level-0/config/"* "$appdir/config/define/"
+fi

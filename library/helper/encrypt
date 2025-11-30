@@ -1,0 +1,4 @@
+#!/bin/bash
+# encrypt file
+# @1 plain file path @2 encrypted file name @3 ecnrypted file stored target path  
+/usr/bin/openssl enc -aes-256-cbc -salt -in $1 -out $2.enc -k $3
