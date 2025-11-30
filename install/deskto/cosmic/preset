@@ -1,0 +1,4 @@
+
+DESKTOP_PACKAGE=""
+DESKTOP_DAEMON=( gdm )
+DESKTOP_GLOBAL=( gcr-ssh-agent.socket )

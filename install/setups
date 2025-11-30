@@ -1,0 +1,195 @@
+#!/bin/bash
+
+## UMOUNTINGALL
+if [[ ! -z $(findmnt --mountpoint /mnt) ]]; then 
+    umount -R /mnt
+fi
+
+
+## ENVIRONTMENT
+appdir=/install
+export PACKAGE=""
+export AURPACK=""
+export FLATPAK=""
+export RDAEMON=""
+export GDAEMON=""
+export KERNBOT=""
+export KERNMOD=""
+export KERNSEC=""
+export KERNPRF=""
+export KERNNET=""
+export KERNMSC="rw quiet"
+
+
+## LOADLIBRARY
+source "$appdir/library/install/dialogs/getsetup"
+source "$appdir/library/install/dialogs/getreset"
+
+
+## PREPARATION
+if [[ ! -d  "$appdir/config/define/post" ]]; then 
+    mkdir -p "$appdir/config/define/post"
+fi
+
+if [[ ! -e "$appdir/config/define/post/packer" ]]; then 
+    touch "$appdir/config/define/post/packer"
+fi
+
+
+## POPULATINGS
+if [[ $1 == "--purge" ]]; then
+    start_installer
+fi
+
+if [[ $1 == "--reset" ]]; then
+    system_resetter
+fi
+
+if [[ $1 == "--teste" ]]; then
+    cat $appdir/config/default > $appdir/config/define/post/packer
+fi
+
+if [[ -e "$appdir/distros/preset" ]]; then
+    cat $appdir/distros/preset >> $appdir/config/define/post/packer &&
+    source $appdir/config/define/post/packer
+fi
+
+if [[ -e "$appdir/library/install/kernels/$DISTRO_KERN/preset" ]]; then
+    source $appdir/library/install/kernels/$DISTRO_KERN/preset
+fi
+
+if [[ -e "$appdir/library/install/system/$DISTRO_SYST/preset" ]]; then
+    source $appdir/library/install/system/basics/preset &&
+    source $appdir/library/install/system/$DISTRO_SYST/preset
+else
+    source $appdir/library/install/system/basics/preset
+fi
+
+if [[ -e "$appdir/library/install/booter/$DISTRO_BOOT/preset" ]]; then
+    source $appdir/library/install/booter/$DISTRO_BOOT/preset
+fi
+
+if [[ -e "$appdir/library/install/deskto/$DISTRO_DESK/preset" ]]; then
+    source $appdir/library/install/deskto/$DISTRO_DESK/preset
+fi
+
+if [[ -e "$appdir/library/install/audios/$DISTRO_AUDI/preset" ]]; then
+    source $appdir/library/install/audios/$DISTRO_AUDI/preset
+fi
+
+if [[ -e "$appdir/library/install/netdev/$DISTRO_NETS/preset" ]]; then
+    source $appdir/library/install/netdev/$DISTRO_NETS/preset
+fi
+
+if [[ -e "$appdir/library/install/docust/$DISTRO_DOCS/preset" ]]; then
+    source $appdir/library/install/docust/$DISTRO_DOCS/preset
+fi
+
+if [[ -e "$appdir/library/install/officers/$DISTRO_WORK/preset" ]]; then
+    source $appdir/library/install/officers/$DISTRO_WORK/preset
+fi
+
+if [[ -e "$appdir/library/install/webap/$DISTRO_WAPP/preset" ]]; then
+    source $appdir/library/install/webap/$DISTRO_WAPP/preset
+fi
+
+if [[ -e "$appdir/library/install/secure/$DISTRO_SECS/preset" ]]; then
+    source $appdir/library/install/secure/$DISTRO_SECS/preset
+fi
+
+if [[ -e "$appdir/library/install/ucodes/preset" ]]; then
+    source $appdir/library/install/ucodes/preset
+fi
+
+if [[ -e "$appdir/library/install/graphs/vdcard" ]]; then
+    source $appdir/library/install/graphs/vdcard
+fi
+
+if [[ -e "$appdir/distros/packer" ]]; then
+    cp -fr $appdir/library/install/syscon $appdir/config/define/post/ &&
+    source $appdir/distros/packer
+fi 
+
+
+echo "PACKAGES='${PACKAGE}'" >> $appdir/config/define/post/packer &&
+echo "AURPACKS='${AURPACK}'" >> $appdir/config/define/post/packer &&
+echo "FLATPAKS='${FLATPAK}'" >> $appdir/config/define/post/packer &&
+echo "RDAEMONS=(${RDAEMON})" >> $appdir/config/define/post/packer &&
+echo "GDAEMONS=(${GDAEMON})" >> $appdir/config/define/post/packer &&
+
+
+## ecnrypted recovery file
+/usr/bin/openssl enc -aes-256-cbc -salt -pbkdf2 -in "$appdir/config/define/post/packer" -out "$appdir/config/define/post/loader.temp" -pass pass:$PASSWORD &&
+
+
+
+## DEBUG ENVIRONTMENT
+#nano $appdir/config/define/packer
+#exit
+
+
+## LOAD PRESETS
+source $appdir/config/define/post/packer &&
+if [[ $MULTILIBS32 == "enable" ]]; then
+    echo "[multilib]" >> /etc/pacman.conf &&
+    echo "Include = /etc/pacman.d/mirrorlist" >> /etc/pacman.conf
+fi
+
+
+## SYSPARTED
+mkfs.ext4 -F -q -b 4096 $DISKPROC &&
+mount $DISKPROC /mnt &&
+
+
+## BOOTINGUP
+if [[ $1 == "--purge" ]]; then
+    mkfs.vfat -F32 -S 4096 -n BOOT $DISKBOOT
+fi
+if [[ $1 == "--teste"  ]]; then
+    mkfs.vfat -F32 -S 4096 -n BOOT $DISKBOOT
+fi
+mkdir -p /mnt/boot && 
+mount -o uid=0,gid=0,dmask=007,fmask=007 $DISKBOOT /mnt/boot/ &&
+
+
+## USERDATUM
+if [[ $1 == "--purge" ]]; then
+    mkfs.ext4 -F -q -b 4096 $DISKDATA
+fi
+if [[ $1 == "--teste"  ]]; then
+    mkfs.ext4 -F -q -b 4096 $DISKDATA
+fi
+
+mkdir -p /mnt/home &&
+mount $DISKDATA /mnt/home &&
+
+
+## MULTILIB
+if [[ $MULTILIBS32 == "enable" ]]; then
+    echo "[multilib]" >> /mnt/etc/pacman.conf &&
+    echo "Include = /etc/pacman.d/mirrorlist" >> /mnt/etc/pacman.conf
+fi
+
+
+# SETUPACKS
+pacstrap /mnt $PACKAGES
+
+
+## RESETTER
+mkdir -p /mnt/boot/data  &&
+cp -fr $appdir/config/define/post/loader.temp /mnt/boot/data/ &&
+
+
+# CONFIGURE
+genfstab -U /mnt > /mnt/etc/fstab &&
+cp -fr $appdir/config/define/* /mnt/ &&
+arch-chroot /mnt /bin/bash /post/syscon &&
+
+
+
+# FINISHING
+read -p "Do yout want reboot now : [Y/n] " REBOOTNOW
+
+if [[ $REBOOTNOW == Y ]]||[[ $REBOOTNOW == y ]];then
+    umount -R /mnt && reboot
+fi

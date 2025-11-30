@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# GRAPHICAL
+graphidven=$(lspci | grep -i --color 'vga\')
+
+
+if [[ ! -z $(echo $graphidven | grep -i --color 'Intel Corporation') ]];then
+    PACKAGE="${PACKAGE} vulkan-intel"
+
+    if [[ $MULTILIBS32 == "true" ]]; then
+        PACKAGE="${PACKAGE} lib32-vulkan-intel"
+    fi
+fi
+
+if [[ ! -z $(lspci | grep -i --color '3d\|NVIDIA') ]];then
+    PACKAGE="${PACKAGE} nvidia-utils"
+fi
+
+if [[ ! -z $(lspci | grep -i --color '3d\|RADEON') ]];then
+    PACKAGE="${PACKAGE} vulkan-radeon"
+
+    if [[ $MULTILIBS32 == "true" ]]; then
+        PACKAGE="${PACKAGE} lib32-vulkan-radeon"
+    fi
+fi
