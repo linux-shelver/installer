@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo "pull repository" && git pull && 
-echo "populating file" && git add . &&
-echo "commit  changes" && git commit -m "$(date)" &&
-echo "push to gitrepo" && git push
-
-echo "pull gitsubtree" && git subtree pull --prefix library library main --squash &&
-echo "pull gitsubtree" && git subtree push --prefix=library library main
