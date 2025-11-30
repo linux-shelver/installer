@@ -11,6 +11,23 @@ else
 fi
 
 
+##
+## SERVICE
+for sys_daemon in "${RDAEMONS[@]}"; do
+    systemctl enable "$sys_daemon"
+done
+
+for glob_daemon in "${GDAEMONS[@]}"; do
+  	systemctl enable --global "$glob_daemon"
+done
+
+
+## network
+if [[ $DISTRO_NETS == "nmt" ]];then
+    systemctl disable NetworkManager-wait-online.service
+fi
+
+
 
 ## KERNELS
 if [[ $( echo $DISTRO_KERN ) == "lqx" ]]; then
@@ -116,24 +133,6 @@ if [[ $( echo $DISTRO_BOOT ) == "sysd" ]]; then
     mkinitcpio -P &&
     bootctl --path=/boot/ install
 fi
-
-
-##
-## SERVICE
-for sys_daemon in "${RDAEMONS[@]}"; do
-    systemctl enable "$sys_daemon"
-done
-
-for glob_daemon in "${GDAEMONS[@]}"; do
-  	systemctl enable --global "$glob_daemon"
-done
-
-
-## network
-if [[ $DISTRO_NETS == "nmt" ]];then
-    systemctl disable NetworkManager-wait-online.service
-fi
-
 
 
 
