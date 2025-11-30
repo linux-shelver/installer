@@ -1,4 +1,0 @@
-#!/bin/bash
-# decrypt file
-# @1 ecnrypted file path @2 decrypted file target path 
-/usr/bin/openssl enc -d -aes-256-cbc -in $1 -out $2

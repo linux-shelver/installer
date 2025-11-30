@@ -1,4 +1,0 @@
-#!/bin/bash
-
-## PACKAGE 
-PACKAGE="${PACKAGE} obsidian hugo go"
