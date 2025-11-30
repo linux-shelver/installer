@@ -80,7 +80,7 @@ if [[ ! -z $AURPACKS ]];then
     sudo -H -u install /bin/bash -c "makepkg -sric --dir /tmp/yay --noconfirm" &&
     sudo -H -u install /bin/bash -c "yay -S $AURPACKS  --noconfirm"
     rm /etc/sudoers.d/install &&
-    userdel -r install &&
+    userdel -r install
 fi
 
 ## flatpak
