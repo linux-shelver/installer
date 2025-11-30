@@ -4,7 +4,7 @@
 procieidven=$(grep "vendor_id" /proc/cpuinfo | head -n 1 | awk '{print $3}')
 
 if [[ "$procieidven" == "GenuineIntel" ]]; then
-    PACKAGE="${PACKAGE} intel-ucode"
+    PACKAGE="${PACKAGE} intel-ucode "
 elif [[ "$procieidven" == "AuthenticAMD" ]]; then
-    PACKAGE="${PACKAGE} amd-ucode"
+    PACKAGE="${PACKAGE} amd-ucode "
 fi

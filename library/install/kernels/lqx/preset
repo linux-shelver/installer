@@ -2,10 +2,10 @@
 
 
 ## PACKAGE 
-PACKAGE="${PACKAGE}scx-scheds"
+PACKAGE="${PACKAGE} scx-scheds "
 
 if [[ ! -z $( ip a | grep "wl" ) ]] ;then
-    PACKAGE="${PACKAGE} wireless-regdb"
+    PACKAGE="${PACKAGE} wireless-regdb "
 fi
 
 ## CONFIGS

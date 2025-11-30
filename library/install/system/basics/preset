@@ -5,7 +5,7 @@ PACKAGE="${PACKAGE} base base-devel linux-firmware sof-firmware mkinitcpio mesa 
 
 
 ## DAEMONS
-RDAEMON="${RDAEMON} update.timer"
+RDAEMON="${RDAEMON} update.timer "
 
 
 ## CONFIGS

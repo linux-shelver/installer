@@ -2,7 +2,7 @@
 
 
 ## PACKAGE
-PACKAGE="${PACKAGE} grub efibootmgr os-prober"
+PACKAGE="${PACKAGE} grub efibootmgr os-prober "
 
 ## DAEMONS
 # RDAEMON="${RDAEMON}"

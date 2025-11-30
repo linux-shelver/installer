@@ -5,7 +5,7 @@ PACKAGE="${PACKAGE} keepassxc firewalld iptables-nft "
 
 
 ## DAEMONS
-RDAEMON="${RDAEMON} firewalld"
+RDAEMON="${RDAEMON} firewalld "
 
 
 ## CONFIGS
