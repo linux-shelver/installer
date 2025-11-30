@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## PACKAGE 
+PACKAGE="${PACKAGE}linux-lts scx-scheds"
+
+if [[ ! -z $( ip a | grep "wl" ) ]] ;then
+    PACKAGE="${PACKAGE} wireless-regdb"
+fi
+
+## CONFIGS
+if [[ -d "$appdir/library/install/kernels/lts/config" ]]; then 
+    cp -fr "$appdir/library/install/kernels/lts/config/"* "$appdir/config/define/" &&
+    echo 'default_uki="/boot/efi/linux/'$DISTRO_UNIQ'.efi"' >> "$appdir/config/define/etc/mkinitcpio.d/linux-lts.preset"
+fi

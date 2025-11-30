@@ -1,0 +1,15 @@
+#!/bin/bash 
+
+
+## PACKAGE
+PACKAGE="${PACKAGE} grub efibootmgr os-prober"
+
+## DAEMONS
+# RDAEMON="${RDAEMON}"
+
+
+## CONFIGS
+if [[ -d "$appdir/library/install/booter/grub/config" ]]; then
+    cp -fr "$appdir/library/install/booter/grub/config/"* "$appdir/config/define/" &&
+    echo 'GRUB_DISTRIBUTOR="'$DISTRO_NAME'"' >> "$appdir/config/define/etc/default/grub"
+fi

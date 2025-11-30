@@ -1,0 +1,154 @@
+#!/bin/bash
+
+source /post/packer
+
+
+#HOSTNAME
+if [[ ! -z $( echo $SYSTHOST ) ]];then
+    echo "$SYSTHOST" > /etc/hostname
+else
+    echo "$DISTRO_UNIQ" > /etc/hostname
+fi
+
+
+
+## KERNELS
+if [[ $( echo $DISTRO_KERN ) == "lqx" ]]; then
+    curl -s 'https://liquorix.net/install-liquorix.sh' | sudo bash &&
+    echo 'default_uki="/boot/efi/linux/'$DISTRO_UNIQ'.efi"' >> /etc/mkinitcpio.d/linux-lqx.preset
+
+elif [[ $( echo $DISTRO_KERN ) == "zen" ]]; then
+    echo 'default_uki="/boot/efi/linux/'$DISTRO_UNIQ'.efi"' >> /etc/mkinitcpio.d/linux-zen.preset
+
+elif [[ $( echo $DISTRO_KERN ) == "lts" ]]; then
+    echo 'default_uki="/boot/efi/linux/'$DISTRO_UNIQ'.efi"' >> /etc/mkinitcpio.d/linux-lts.preset
+
+fi
+
+
+## LOCALTIME 
+ln -sf /usr/share/zoneinfo/$TIMEZONE /etc/localtime &&
+hwclock --systohc &&
+timedatectl set-ntp true &&
+timedatectl set-timezone $TIMEZONE &&
+
+
+
+## LOCALE
+locale-gen &&
+
+
+## USERADD
+if [[ -d /home/* ]]; then
+
+    listuser=($( ls /home/ ))
+
+    for olduser in "${listuser[@]}"; do
+
+        if [[ $olduser == $USERNAME ]]; then
+            useradd -d /home/$USERNAME $USERNAME &&
+            echo "$USERNAME:$PASSWORD" | chpasswd &&
+            chown -R $USERNAME:$USERNAME home/$USERNAME &&
+            usermod -aG wheel $USERNAME 
+            clear
+        else
+            useradd -d /home/$olduser $olduser &&
+            read -p "add user password for user $olduser" olduserpassword
+            chown -R $olduser:$olduser home/$user &&
+            echo "$olduser:$olduserpassword" | chpasswd &&
+            clear
+        fi
+        
+    done
+
+else
+    useradd -m $USERNAME &&
+    usermod -aG wheel $USERNAME &&
+    echo "$USERNAME:$PASSWORD" | chpasswd
+fi
+
+
+
+##
+## PACKAGE
+
+## aurpack
+if [[ ! -z $AURPACKS ]];then
+    useradd -m install &&
+    echo 'install ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/install &&
+    sudo -H -u install /bin/bash -c "git clone https://aur.archlinux.org/yay /tmp/yay" &&
+    sudo -H -u install /bin/bash -c "makepkg -sric --dir /tmp/yay --noconfirm" &&
+    sudo -H -u install /bin/bash -c "yay -S $AURPACKS  --noconfirm"
+    rm /etc/sudoers.d/install &&
+    userdel -r install
+fi
+
+## flatpak
+if [[ ! -z $FLATPAKS ]];then
+    for flatapp in "${FLATPAKS[@]}"; do
+        flatpak install --noninteractive $flatapp
+    done
+fi
+
+
+## waydroid
+if [[ ! -z $( echo $PACKAGE | grep waydroid ) ]];then
+    waydroid init -s GAPPS
+fi
+
+
+##
+## BINPATH
+chmod +x /usr/xbin/* &&
+chmod +x /usr/rbin/* &&
+
+
+## INITRAM
+rm /etc/mkinitcpio.conf &&
+rm -fr /etc/mkinitcpio.conf.d/ &&
+echo "root=$DISKPROC" > /etc/cmdline.d/01-boot.conf &&
+
+
+##
+## SERVICE
+for system_daemon in "${RDAEMONS[@]}"; do
+    systemctl enable "$system_daemon"
+done
+
+for global_daemon in "${GDAEMONS[@]}"; do
+  	systemctl enable --global "$global_daemon"
+done
+
+
+## network
+if [[ $DISTRO_NETS == "nmt" ]];then
+    systemctl disable NetworkManager-wait-online.service
+fi
+
+
+##
+## BOOTUPS
+
+## grub2
+if [[ $( echo $DISTRO_BOOT ) == "grub" ]]; then
+    mkdir -p /boot/{efi,$DISTRO_UNIQ} &&
+    mkdir -p /boot/efi/{boot,linux,systemd} &&
+    mkinitcpio -P &&
+    echo 'GRUB_DISTRIBUTOR="'$DISTRO_NAME'"' >> /etc/default/grub &&
+    grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=$DISTRO_UNIQ &&
+    grub-mkconfig -o /boot/grub/grub.cfg
+fi
+
+
+## systemd
+if [[ $( echo $DISTRO_BOOT ) == "sysd" ]]; then
+    mkdir -p /boot/{efi,kernel,loader} &&
+    mkdir -p /boot/efi/{boot,linux,systemd} 
+    mkinitcpio -P &&
+    bootctl --path=/boot/ install
+fi
+
+
+
+## FINISHING
+rm -fr /mnt/post && clear && echo "$DISTRO_NAME Linux installation finish, close chroot"

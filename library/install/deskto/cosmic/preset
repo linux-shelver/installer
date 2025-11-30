@@ -1,0 +1,15 @@
+#!/bin/bash
+
+
+## PACKAGE
+PACKAGE="${PACKAGE} gdm cosmic-app-library cosmic-applets cosmic-bg cosmic-comp cosmic-initial-setup cosmic-files cosmic-icon-theme cosmic-idle cosmic-launcher cosmic-notifications cosmic-osd cosmic-panel cosmic-randr cosmic-screenshot cosmic-settings cosmic-settings-daemon cosmic-session xdg-desktop-portal-cosmic cosmic-workspaces gcc-libs glibc noto-fonts switcheroo-control ttf-opensans gvfs gvfs-afc gvfs-dnssd gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-onedrive gvfs-smb gvfs-wsdd cosmic-files cosmic-player cosmic-store cosmic-terminal cosmic-wallpapers dconf gnome-keyring" 
+RDAEMON="${RDAEMON} gdm"
+
+## GLOBALS
+GDAEMON="${GDAEMON} gcr-ssh-agent.socket"
+
+
+## CONFIGS
+if [[ -d "$appdir/library/install/deksto/cosmic/config" ]]; then
+    cp -fr "$appdir/library/install/deksto/cosmic/config/"* "$appdir/config/define/"
+fi

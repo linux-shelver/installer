@@ -1,0 +1,14 @@
+#!/bin/bash
+
+## PACKAGE 
+PACKAGE="${PACKAGE} firefox nginx "
+
+
+## DAEMONS
+RDAEMON="${RDAEMON} nginx "
+
+
+## CONFIGS
+if [[ -d "$appdir/library/install/webap/level-0/config" ]]; then
+    cp -fr "$appdir/library/install/webap/level-0/config/"* "$appdir/config/define/"
+fi

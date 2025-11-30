@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+PACKAGE="${PACKAGE} jack2 pipewire wireplumber pipewire-alsa pipewire-pulse"
+GDAEMON="${GDAEMON} pipewire-pulse"
