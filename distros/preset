@@ -1,9 +1,9 @@
-DISTRO_NAME="Eyerise"
-DISTRO_UNIQ="eyerise"
+DISTRO_NAME="Shelver"
+DISTRO_UNIQ="shelver"
 
-DISTRO_DESK="plasma"
+DISTRO_DESK="cosmic"
 DISTRO_AUDI="pipe"
-DISTRO_KERN="zen"
+DISTRO_KERN="lts"
 DISTRO_NETS="nmt"
 DISTRO_BOOT="grub"
 DISTRO_SYST="based"
