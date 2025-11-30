@@ -5,7 +5,7 @@
 PACKAGE="${PACKAGE} sddm weston plasma plasma-nm plasma-keyboard kdegraphics-thumbnailers xdg-desktop-portal-kde ffmpegthumbs dolphin discover kwallet kwalletmanager kwallet-pam ksshaskpass powerdevil gvfs gvfs-afc gvfs-dnssd gvfs-goa gvfs-google gvfs-gphoto2 gvfs-mtp gvfs-nfs gvfs-onedrive gvfs-smb gvfs-wsdd kalk merkuro konsole okular breeze-icons"
 
 ## DAEMONS
-RDAEMON="${RDAEMON} sddm"
+RDAEMON="${RDAEMON} sddm "
 
 ## GLOBALS
 GDAEMON="${GDAEMON}"

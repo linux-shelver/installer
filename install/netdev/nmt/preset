@@ -1,10 +1,10 @@
 #!/bin/bash
 
 ## PACKAGE
-PACKAGE="${PACKAGE} dnsmasq bluez-utils networkmanager openssh"
+PACKAGE="${PACKAGE} dnsmasq bluez-utils networkmanager openssh "
 
 ## DAEMONS
-RDAEMON="${RDAEMON} sshd systemd-timesyncd.service dnsmasq NetworkManager"
+RDAEMON="${RDAEMON} sshd systemd-timesyncd.service dnsmasq NetworkManager "
 
 
 ## CONFIGS

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## PACKAGE 
-PACKAGE="${PACKAGE} base base-devel linux-firmware sof-firmware mkinitcpio mesa ttf-droid kitty-terminfo bash-completion git wget aria2 unzip neovim flatpak fuse btop less"
+PACKAGE="${PACKAGE} base base-devel linux-firmware sof-firmware mkinitcpio mesa ttf-droid kitty-terminfo bash-completion git wget aria2 unzip neovim flatpak fuse btop less "
 
 
 ## DAEMONS

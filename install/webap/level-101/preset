@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ## PACKAGE 
-PACKAGE="${PACKAGE} firefox nginx"
+PACKAGE="${PACKAGE} firefox nginx "
 
 
 ## DAEMONS
-RDAEMON="${RDAEMON} nginx"
+RDAEMON="${RDAEMON} nginx "
 
 
 ## CONFIGS
