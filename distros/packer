@@ -1,9 +1,9 @@
 #!/bin/bash
 
-PACKAGE="${PACKAGE} perl-image-exiftool easytag paper-clip vlc cups darktable ffmpeg kodi-gles docker "
+PACKAGE="${PACKAGE} perl-image-exiftool easytag paper-clip vlc cups darktable ffmpeg kodi-gles "
 AURPACK="${AURPACK} plattenalbum "
 FLATPAK=(  )
-RDAEMON="${RDAEMON} docker.service "
+RDAEMON="${RDAEMON} "
 GDAEMON="${GDAEMON}"
 
 
