@@ -4,4 +4,5 @@ echo "pull repository" && git pull &&
 echo "populating file" && git add . &&
 echo "commit  changes" && git commit -m "$(date)" &&
 echo "push to gitrepo" && git push
+echo "pull subtrees"   && git subtree pull --prefix=library library main
 echo "push to subtree" && git subtree push --prefix=library library main
