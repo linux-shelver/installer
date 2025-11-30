@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "pull repository" && git pull && 
+echo "pull subtrees"   && git subtree pull --prefix=library library main
